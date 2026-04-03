@@ -1,0 +1,28 @@
+@startuml
+abstract class AttackAction {
+  +describe() : String
+  +execute(attacker, target) : int
+  ~rawDamage(attacker, target) : int
+  ~effectBreakdown() : String
+}
+
+class BasicAttack {
+  -name : String
+  -flatBonus : int
+}
+
+abstract class ActionDecorator {
+  #wrapped : AttackAction
+}
+
+class FireRuneDecorator
+class PoisonCoatingDecorator
+class CriticalFocusDecorator
+
+AttackAction <|-- BasicAttack
+AttackAction <|-- ActionDecorator
+ActionDecorator <|-- FireRuneDecorator
+ActionDecorator <|-- PoisonCoatingDecorator
+ActionDecorator <|-- CriticalFocusDecorator
+ActionDecorator --> AttackAction : wraps
+@enduml

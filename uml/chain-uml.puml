@@ -1,0 +1,19 @@
+@startuml
+abstract class DefenseHandler {
+  -next : DefenseHandler
+  +setNext(next)
+  +handle(incomingDamage, defender)
+  #apply(incomingDamage, defender)
+}
+
+class DodgeHandler
+class BlockHandler
+class ArmorHandler
+class HpHandler
+
+DefenseHandler <|-- DodgeHandler
+DefenseHandler <|-- BlockHandler
+DefenseHandler <|-- ArmorHandler
+DefenseHandler <|-- HpHandler
+DefenseHandler --> DefenseHandler : next
+@enduml

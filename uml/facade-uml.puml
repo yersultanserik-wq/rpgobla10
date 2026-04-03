@@ -1,0 +1,36 @@
+@startuml
+class DungeonFacade {
+  -preparationService : PreparationService
+  -battleService : BattleService
+  -rewardService : RewardService
+  +runAdventure(dungeonName, hero, boss, action) : AdventureResult
+}
+
+class PreparationService {
+  +prepare(dungeonName, hero, action) : PreparationSnapshot
+}
+
+class BattleService {
+  +fight(hero, boss, action) : BattleSnapshot
+}
+
+class RewardService {
+  +grantRewards(bossName, heroWon, rounds) : RewardBundle
+}
+
+class AdventureResult {
+  +summary() : String
+}
+
+class PreparationSnapshot
+class BattleSnapshot
+class RewardBundle
+
+DungeonFacade --> PreparationService
+DungeonFacade --> BattleService
+DungeonFacade --> RewardService
+DungeonFacade --> AdventureResult
+PreparationService --> PreparationSnapshot
+BattleService --> BattleSnapshot
+RewardService --> RewardBundle
+@enduml

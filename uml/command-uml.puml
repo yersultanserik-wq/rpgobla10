@@ -1,0 +1,17 @@
+@startuml
+interface ActionCommand {
+  +execute()
+  +undo()
+  +description()
+}
+
+class AttackCommand
+class HealCommand
+class DefendCommand
+class ActionQueue
+
+ActionCommand <|.. AttackCommand
+ActionCommand <|.. HealCommand
+ActionCommand <|.. DefendCommand
+ActionQueue --> ActionCommand : queues
+@enduml
