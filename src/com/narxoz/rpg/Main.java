@@ -26,6 +26,22 @@ import com.narxoz.rpg.hero.equipment.MagicEquipmentFactory;
 import com.narxoz.rpg.hero.equipment.MedievalEquipmentFactory;
 import com.narxoz.rpg.hero.equipment.RangerEquipmentFactory;
 import com.narxoz.rpg.tournament.TournamentEngine;
+import com.narxoz.rpg.combatant.DungeonBoss;
+import com.narxoz.rpg.engine.DungeonEngine;
+import com.narxoz.rpg.engine.EncounterResult;
+import com.narxoz.rpg.floor.MonsterFloor;
+import com.narxoz.rpg.floor.RestFloor;
+import com.narxoz.rpg.floor.TowerFloor;
+import com.narxoz.rpg.floor.TrapFloor;
+import com.narxoz.rpg.observer.AchievementObserver;
+import com.narxoz.rpg.observer.BattleLogger;
+import com.narxoz.rpg.observer.GameEventPublisher;
+import com.narxoz.rpg.observer.PartySupportObserver;
+import com.narxoz.rpg.tower.TowerRunResult;
+import com.narxoz.rpg.tower.TowerRunner;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -124,5 +140,29 @@ public class Main {
 
         TournamentEngine tournamentEngine = new TournamentEngine();
         TournamentResult tournamentResult = tournamentEngine.runBattle(arenaHero, arenaOpponent);
+        System.out.println("\n=== HW7 STRATEGY + OBSERVER DEMO ===");
+        GameEventPublisher publisher = new GameEventPublisher();
+        publisher.addObserver(new BattleLogger());
+        publisher.addObserver(new AchievementObserver());
+
+        com.narxoz.rpg.combatant.Hero knight = new com.narxoz.rpg.combatant.Hero("Magzhan", 90, 18, 4);
+        com.narxoz.rpg.combatant.Hero ranger = new com.narxoz.rpg.combatant.Hero("Aruzhan", 72, 20, 3);
+        publisher.addObserver(new PartySupportObserver(knight));
+        publisher.addObserver(new PartySupportObserver(ranger));
+
+        DungeonBoss cursedBoss = new DungeonBoss("Cursed Dungeon Lord", 120, 14, 3, publisher);
+        DungeonEngine dungeonEngine = new DungeonEngine(publisher);
+        EncounterResult encounter = dungeonEngine.runEncounter(Arrays.asList(knight, ranger), cursedBoss);
+        System.out.println("HW7 result: " + encounter.summary() + " Rounds=" + encounter.rounds());
+
+        System.out.println("\n=== HW8 STATE + TEMPLATE METHOD DEMO ===");
+        com.narxoz.rpg.combatant.Hero towerWarrior = new com.narxoz.rpg.combatant.Hero("Taukekhan", 85, 17, 5);
+        com.narxoz.rpg.combatant.Hero towerMage = new com.narxoz.rpg.combatant.Hero("Sanzhar", 65, 22, 2);
+        List<com.narxoz.rpg.combatant.Hero> towerParty = Arrays.asList(towerWarrior, towerMage);
+        List<TowerFloor> floors = Arrays.asList(new TrapFloor(1), new MonsterFloor(2), new RestFloor(3), new MonsterFloor(4));
+        TowerRunner towerRunner = new TowerRunner();
+        TowerRunResult towerResult = towerRunner.run(towerParty, floors);
+        System.out.println("HW8 result: " + towerResult.summary() + " Floors cleared=" + towerResult.floorsCleared());
+
     }
 }
