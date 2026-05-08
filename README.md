@@ -1,244 +1,121 @@
-# \# 🏰 Adventurers' Guild — RPG Design Patterns (HW10)
+# 🏰 Adventurers' Guild — RPG Design Patterns (HW10)
 
-# 
+Java RPG project demonstrating the implementation of **GoF Design Patterns** in a fantasy-themed game engine.
 
-# Java RPG project demonstrating the implementation of \*\*GoF Design Patterns\*\* in a fantasy-themed game engine.
+This homework focuses on:
 
-# 
+* **Iterator Pattern**
+* **Mediator Pattern**
 
-# This homework focuses on:
+The project simulates an **Adventurers' Guild War Council**, where quests are traversed using custom iterators and guild members communicate through a mediator.
 
-# 
+---
 
-# \* \*\*Iterator Pattern\*\*
+# 🚀 Features
 
-# \* \*\*Mediator Pattern\*\*
+## Iterator Pattern
 
-# 
+Custom iterators for traversing quests in different ways:
 
-# The project simulates an \*\*Adventurers' Guild War Council\*\*, where quests are traversed using custom iterators and guild members communicate through a mediator.
+* Ordered traversal
+* Reverse traversal
+* Priority-based traversal
 
-# 
+The internal collection remains fully encapsulated.
 
-# \---
+## Mediator Pattern
 
-# 
+Guild officers communicate through a central `GuildHall` mediator.
 
-# \# 🚀 Features
+Characters never reference each other directly:
 
-# 
+* Captain
+* Scout
+* Quartermaster
+* Healer
 
-# \## Iterator Pattern
+This reduces coupling and makes the system easier to extend.
 
-# 
+---
 
-# Custom iterators for traversing quests in different ways:
+# 📦 Technologies
 
-# 
+* Java 17+
+* OOP
+* GoF Design Patterns
+* No external libraries
 
-# \* Ordered traversal
+---
 
-# \* Reverse traversal
+# 📁 Project Structure
 
-# \* Priority-based traversal
+```text
+src/com/narxoz/rpg/
+│
+├── quest/        -> Iterator pattern
+├── guild/        -> Mediator pattern
+├── council/      -> Demo engine
+└── Main.java
+```
 
-# 
+---
 
-# The internal collection remains fully encapsulated.
+# ⚔️ Iterator Example
 
-# 
+```java
+QuestIterator iterator = log.priorityIterator(QuestPriority.HIGH);
 
-# \## Mediator Pattern
+while (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}
+```
 
-# 
+---
 
-# Guild officers communicate through a central `GuildHall` mediator.
+# 🏛️ Mediator Example
 
-# 
+```java
+Scout scout = new Scout("Yerasyl", hall);
 
-# Characters never reference each other directly:
+scout.warnThreat("Troll patrol on the eastern road!");
+```
 
-# 
+Output is routed through the `GuildHall` mediator.
 
-# \* Captain
+---
 
-# \* Scout
+# ▶️ Run Project
 
-# \* Quartermaster
+## Windows PowerShell
 
-# \* Healer
+```powershell
+javac -d out (Get-ChildItem -Recurse -Filter *.java src | ForEach-Object { $_.FullName })
 
-# 
+java -cp out com.narxoz.rpg.Main
+```
 
-# This reduces coupling and makes the system easier to extend.
+---
 
-# 
+# 🎮 Demo Includes
 
-# \---
+* Quest traversal system
+* War Council simulation
+* Topic-based communication
+* Priority filtering
+* Dynamic message routing
 
-# 
+---
 
-# \# 📦 Technologies
+# ✅ Design Principles
 
-# 
+* Encapsulation
+* Low coupling
+* Open/Closed Principle
+* Single Responsibility Principle
 
-# \* Java 17+
+---
 
-# \* OOP
+# 👤 Author
 
-# \* GoF Design Patterns
-
-# \* No external libraries
-
-# 
-
-# \---
-
-# 
-
-# \# 📁 Project Structure
-
-# 
-
-# ```text
-
-# src/com/narxoz/rpg/
-
-# │
-
-# ├── quest/        -> Iterator pattern
-
-# ├── guild/        -> Mediator pattern
-
-# ├── council/      -> Demo engine
-
-# └── Main.java
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \# ⚔️ Iterator Example
-
-# 
-
-# ```java
-
-# QuestIterator iterator = log.priorityIterator(QuestPriority.HIGH);
-
-# 
-
-# while (iterator.hasNext()) {
-
-# &#x20;   System.out.println(iterator.next());
-
-# }
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \# 🏛️ Mediator Example
-
-# 
-
-# ```java
-
-# Scout scout = new Scout("Yerasyl", hall);
-
-# 
-
-# scout.warnThreat("Troll patrol on the eastern road!");
-
-# ```
-
-# 
-
-# Output is routed through the `GuildHall` mediator.
-
-# 
-
-# \---
-
-# 
-
-# \# ▶️ Run Project
-
-# 
-
-# \## Windows PowerShell
-
-# 
-
-# ```powershell
-
-# javac -d out (Get-ChildItem -Recurse -Filter \*.java src | ForEach-Object { $\_.FullName })
-
-# 
-
-# java -cp out com.narxoz.rpg.Main
-
-# ```
-
-# 
-
-# \---
-
-# 
-
-# \# 🎮 Demo Includes
-
-# 
-
-# \* Quest traversal system
-
-# \* War Council simulation
-
-# \* Topic-based communication
-
-# \* Priority filtering
-
-# \* Dynamic message routing
-
-# 
-
-# \---
-
-# 
-
-# \# ✅ Design Principles
-
-# 
-
-# \* Encapsulation
-
-# \* Low coupling
-
-# \* Open/Closed Principle
-
-# \* Single Responsibility Principle
-
-# 
-
-# \---
-
-# 
-
-# \# 👤 Author
-
-# 
-
-# \*\*Yersultan Serik\*\*
-
-# Narxoz University — Software Engineering
-
-
-
+**Yersultan Serik**
+Narxoz University — Software Engineering
