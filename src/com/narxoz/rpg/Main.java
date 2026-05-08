@@ -39,6 +39,9 @@ import com.narxoz.rpg.observer.GameEventPublisher;
 import com.narxoz.rpg.observer.PartySupportObserver;
 import com.narxoz.rpg.tower.TowerRunResult;
 import com.narxoz.rpg.tower.TowerRunner;
+import com.narxoz.rpg.combatant.VaultHero;
+import com.narxoz.rpg.vault.ChronomancerEngine;
+import com.narxoz.rpg.vault.VaultRunResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -164,5 +167,12 @@ public class Main {
         TowerRunResult towerResult = towerRunner.run(towerParty, floors);
         System.out.println("HW8 result: " + towerResult.summary() + " Floors cleared=" + towerResult.floorsCleared());
 
+        System.out.println("\n=== HW9 VISITOR + MEMENTO DEMO ===");
+        VaultHero vaultHero = new VaultHero("Aibek the Chrono-Knight", 100, 80, 500);
+        ChronomancerEngine vaultEngine = new ChronomancerEngine();
+        VaultRunResult vaultResult = vaultEngine.run(vaultHero);
+        System.out.println("\nHW9 final result: " + vaultResult.summary());
+        System.out.println("Visitor appraisal reports:");
+        vaultResult.appraisalLines().forEach(line -> System.out.println("  • " + line));
     }
 }
