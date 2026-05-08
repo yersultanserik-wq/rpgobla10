@@ -1,184 +1,244 @@
-# 🏰 Chronomancer's Vault — RPG Design Patterns (HW1–HW9)
+# \# 🏰 Adventurers' Guild — RPG Design Patterns (HW10)
 
-A progressive RPG engine built in pure Java demonstrating **9 homeworks worth of GoF design patterns**.  
-Each homework adds a new pattern pair on top of the existing codebase — no rewrites, only extensions.
+# 
 
----
+# Java RPG project demonstrating the implementation of \*\*GoF Design Patterns\*\* in a fantasy-themed game engine.
 
-## 🚀 Quick Start
+# 
 
-**Bash / macOS / Linux:**
-```bash
-javac -d out $(find src -name "*.java")
-java -cp out com.narxoz.rpg.Main
-```
+# This homework focuses on:
 
-**Windows PowerShell:**
-```powershell
-javac -d out (Get-ChildItem -Recurse -Filter *.java src | ForEach-Object { $_.FullName })
-java -cp out com.narxoz.rpg.Main
-```
+# 
 
-> Requires **Java 17+**. No external dependencies.
+# \* \*\*Iterator Pattern\*\*
 
----
+# \* \*\*Mediator Pattern\*\*
 
-## 📚 Pattern Overview
+# 
 
-| HW | Patterns | Theme |
-|----|----------|-------|
-| HW1 | Factory Method + Abstract Factory | Hero & equipment creation |
-| HW2 | Builder + Prototype | Enemy construction & cloning |
-| HW3 | Singleton + Adapter | Battle engine & combatant unification |
-| HW5 | Decorator + Facade | Attack upgrades & dungeon runs |
-| HW6 | Command + Chain of Responsibility | Action queue & defense chain |
-| HW7 | Strategy + Observer | Combat AI & event system |
-| HW8 | State + Template Method | Hero states & Haunted Tower floors |
-| **HW9** | **Visitor + Memento** | **Chronomancer's Vault** |
+# The project simulates an \*\*Adventurers' Guild War Council\*\*, where quests are traversed using custom iterators and guild members communicate through a mediator.
 
----
+# 
 
-## 🔮 HW9 — Visitor + Memento
+# \---
 
-### The Scenario
-A hero enters the **Chronomancer's Vault** — a time-warped dungeon full of magical artifacts and deadly traps.  
-- **Visitor** appraises a mixed inventory of artifacts without a single `instanceof`.  
-- **Memento** saves checkpoints before risky rooms so the Chronomancer can rewind failed attempts.
+# 
 
----
+# \# 🚀 Features
 
-### 🗺️ Visitor Pattern
+# 
 
-**Goal:** run multiple reports over a heterogeneous artifact inventory without touching artifact classes.
+# \## Iterator Pattern
 
-**Artifacts** (`com.narxoz.rpg.artifact`):
+# 
 
-| Class | Key Fields |
-|-------|-----------|
-| `Weapon` | `attackBonus`, `damageType` |
-| `Potion` | `healAmount`, `curesCurse` |
-| `Scroll` | `spellName`, `manaCost` |
-| `Ring` | `manaBonus`, `enchantment` |
-| `Armor` | `defenseBonus`, `material` |
+# Custom iterators for traversing quests in different ways:
 
-Each artifact implements:
-```java
-public void accept(ArtifactVisitor visitor) {
-    visitor.visit(this); // double-dispatch
-}
-```
+# 
 
-**Concrete Visitors** (new reports = new classes, zero artifact edits):
+# \* Ordered traversal
 
-| Visitor | What it does |
-|---------|-------------|
-| `GoldAppraisalVisitor` | Calculates gold value per item type with rarity multipliers |
-| `CurseDetectionVisitor` | Flags shadow/void weapons, time-warp rings, soul-crystal armor |
-| `EncumbranceVisitor` | Calculates carry weight in kg for each item category |
+# \* Reverse traversal
 
-**Usage:**
-```java
-Inventory inv = new Inventory();
-inv.add(new Weapon("Chrono-Blade", 200, 8, "arcane"));
-inv.add(new Ring("Ring of Time-Warp", 350, 15, "time-warp"));
+# \* Priority-based traversal
 
-GoldAppraisalVisitor appraiser = new GoldAppraisalVisitor();
-inv.accept(appraiser);
-System.out.println(appraiser.summary()); // → "total 820g"
-```
+# 
 
----
+# The internal collection remains fully encapsulated.
 
-### ⏪ Memento Pattern
+# 
 
-**Goal:** snapshot a hero's full mutable state (HP, mana, gold, inventory) so the vault can rewind after a trap.
+# \## Mediator Pattern
 
-**Roles:**
+# 
 
-| Role | Class | Responsibility |
-|------|-------|---------------|
-| Originator | `VaultHero` | Creates and restores mementos |
-| Memento | `HeroMemento` | Immutable snapshot; fields are package-private |
-| Caretaker | `Caretaker` | Manages a stack of checkpoints (max depth = 5) |
+# Guild officers communicate through a central `GuildHall` mediator.
 
-**Usage:**
-```java
-VaultHero hero = new VaultHero("Aibek", 100, 80, 500);
-Caretaker caretaker = new Caretaker();
+# 
 
-caretaker.push(hero.saveMemento("Before Trap Room"));
+# Characters never reference each other directly:
 
-hero.takeDamage(50);
-hero.spendGold(200);
+# 
 
-caretaker.pop().ifPresent(hero::restoreMemento); // ⏪ rewind
-```
+# \* Captain
 
----
+# \* Scout
 
-## 📁 Package Structure
+# \* Quartermaster
 
-```
-src/com/narxoz/rpg/
-├── artifact/     ← HW9 Visitor (ArtifactVisitor, 5 artifact types, 3 visitors, Inventory)
-├── memento/      ← HW9 Memento (Caretaker)
-├── vault/        ← HW9 Engine (ChronomancerEngine, VaultRunResult)
-├── combatant/    ← VaultHero + HeroMemento (Originator + Memento token)
-├── floor/        ← HW8 Template Method floors
-├── state/        ← HW8 State machine
-├── observer/     ← HW7 Observer / event bus
-├── strategy/     ← HW7 Combat strategy
-├── command/      ← HW6 Command + ActionQueue
-├── chain/        ← HW6 Chain of Responsibility
-├── decorator/    ← HW5 Attack decorators
-├── facade/       ← HW5 DungeonFacade
-├── adapter/      ← HW3 Combatant adapters
-├── battle/       ← HW3 Singleton BattleEngine
-├── enemy/        ← HW2 Builder + Prototype
-├── hero/         ← HW1 Factory Method + Abstract Factory
-└── Main.java     ← Runs all HW demos in sequence
-```
+# \* Healer
 
----
+# 
 
-## 🎮 HW9 Demo Output (excerpt)
+# This reduces coupling and makes the system easier to extend.
 
-```
-=== HW9 VISITOR + MEMENTO DEMO ===
+# 
 
-╔══════════════════════════════════════╗
-║    CHRONOMANCER'S VAULT — ENTER      ║
-╚══════════════════════════════════════╝
+# \---
 
-  >> Running Gold Appraisal on vault inventory...
-  [Appraise] Weapon  "Ancient Chrono-Blade" → 320g
-  [Appraise] Ring    "Ring of Time-Warp"    → 650g
-  >> Gold Appraisal: 5 items → total 1370g
+# 
 
-  >> Running Curse Detection...
-  [Curse] ⚠  Ring  "Ring of Time-Warp"  — CURSED! (enchantment: time-warp)
-  [Curse] ⚠  Armor "Void-Crystal Plate" — CURSED! (material: soul-crystal)
+# \# 📦 Technologies
 
---- Room 3: Trap Room ---
-  [Caretaker] Saved checkpoint: "Before Trap Room"
-  ⚡ TRAP TRIGGERED!
-  ⏪ CHRONOMANCER'S REWIND activated!
-  [Rewind] Aibek restored to checkpoint "Before Trap Room"
-```
+# 
 
----
+# \* Java 17+
 
-## ✅ Anti-Pattern Checklist
+# \* OOP
 
-- ❌ No `instanceof` in visitor logic — pure double-dispatch
-- ❌ No `Caretaker` reading memento internals — fields are package-private
-- ❌ No artifact class modified to add a new visitor
-- ✅ Open/Closed: new reports = new `ArtifactVisitor` implementation only
-- ✅ Memento encapsulation: `HeroMemento` constructor is package-private
+# \* GoF Design Patterns
 
----
+# \* No external libraries
 
-## 👤 Author
+# 
 
-**Yersultan Serik** — Narxoz University, Software Engineering  
-Homework series: RPG Design Patterns (HW1–HW9)
+# \---
+
+# 
+
+# \# 📁 Project Structure
+
+# 
+
+# ```text
+
+# src/com/narxoz/rpg/
+
+# │
+
+# ├── quest/        -> Iterator pattern
+
+# ├── guild/        -> Mediator pattern
+
+# ├── council/      -> Demo engine
+
+# └── Main.java
+
+# ```
+
+# 
+
+# \---
+
+# 
+
+# \# ⚔️ Iterator Example
+
+# 
+
+# ```java
+
+# QuestIterator iterator = log.priorityIterator(QuestPriority.HIGH);
+
+# 
+
+# while (iterator.hasNext()) {
+
+# &#x20;   System.out.println(iterator.next());
+
+# }
+
+# ```
+
+# 
+
+# \---
+
+# 
+
+# \# 🏛️ Mediator Example
+
+# 
+
+# ```java
+
+# Scout scout = new Scout("Yerasyl", hall);
+
+# 
+
+# scout.warnThreat("Troll patrol on the eastern road!");
+
+# ```
+
+# 
+
+# Output is routed through the `GuildHall` mediator.
+
+# 
+
+# \---
+
+# 
+
+# \# ▶️ Run Project
+
+# 
+
+# \## Windows PowerShell
+
+# 
+
+# ```powershell
+
+# javac -d out (Get-ChildItem -Recurse -Filter \*.java src | ForEach-Object { $\_.FullName })
+
+# 
+
+# java -cp out com.narxoz.rpg.Main
+
+# ```
+
+# 
+
+# \---
+
+# 
+
+# \# 🎮 Demo Includes
+
+# 
+
+# \* Quest traversal system
+
+# \* War Council simulation
+
+# \* Topic-based communication
+
+# \* Priority filtering
+
+# \* Dynamic message routing
+
+# 
+
+# \---
+
+# 
+
+# \# ✅ Design Principles
+
+# 
+
+# \* Encapsulation
+
+# \* Low coupling
+
+# \* Open/Closed Principle
+
+# \* Single Responsibility Principle
+
+# 
+
+# \---
+
+# 
+
+# \# 👤 Author
+
+# 
+
+# \*\*Yersultan Serik\*\*
+
+# Narxoz University — Software Engineering
+
+
+
