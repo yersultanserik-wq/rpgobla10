@@ -42,6 +42,8 @@ import com.narxoz.rpg.tower.TowerRunner;
 import com.narxoz.rpg.combatant.VaultHero;
 import com.narxoz.rpg.vault.ChronomancerEngine;
 import com.narxoz.rpg.vault.VaultRunResult;
+import com.narxoz.rpg.council.CouncilEngine;
+import com.narxoz.rpg.council.CouncilRunResult;
 
 import java.util.Arrays;
 import java.util.List;
@@ -174,5 +176,12 @@ public class Main {
         System.out.println("\nHW9 final result: " + vaultResult.summary());
         System.out.println("Visitor appraisal reports:");
         vaultResult.appraisalLines().forEach(line -> System.out.println("  • " + line));
+
+        System.out.println("\n=== HW10 ITERATOR + MEDIATOR DEMO ===");
+        CouncilEngine councilEngine = new CouncilEngine();
+        CouncilRunResult councilResult = councilEngine.run("Iron Shield");
+        System.out.println("\nHW10 final result: " + councilResult.summary());
+        System.out.println("High-priority quests selected for campaign:");
+        councilResult.selectedQuestTitles().forEach(t -> System.out.println("  • " + t));
     }
 }
